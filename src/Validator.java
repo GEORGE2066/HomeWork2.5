@@ -25,14 +25,19 @@ public class Validator {
         } else if (!password.equals(confirmPassword)) {
             throw new WrongPasswordException("Неверный пароль");
         }
-        for (int i = 0; i < login.length(); i++) {
-            if (!VALID.contains(String.valueOf(login.charAt(i)))) {
-                throw new WrongLoginException("Логин может содержать латинские символы, цифры от 0 до 9 и нижнее подчёркивание");
-            }
-        }
-        for (int i = 0; i < password.length(); i++) {
-            if (!VALID.contains(String.valueOf(password.charAt(i)))) {
-                throw new WrongPasswordException("Пароль может содержать латинские символы, цифры от 0 до 9 и нижнее подчёркивание");
+        correcter(login, true);
+        correcter(password, true);
+        correcter(confirmPassword, true);
+    }
+
+    public static void correcter(String str, boolean isLogin) throws WrongPasswordException, WrongLoginException {
+        for (int i = 0; i < str.length(); i++) {
+            if (!VALID.contains(String.valueOf(str.charAt(i)))) {
+                if (isLogin) {
+                    throw new WrongLoginException("В логине некорректный символ");
+                } else {
+                    throw new WrongPasswordException("В пароле содержится некорретный символ");
+                }
             }
         }
     }
